@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.css"; // 스타일 파일 임포트
 
 const SOUL_DATA = [
-  "https://images.unsplash.com/photo-1713390110946-2a966eebd346?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1713341207125-c745927e08de?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1712246437466-fedea86a99f5?q=80&w=2274&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  {
+    src: "https://images.unsplash.com/photo-1713390110946-2a966eebd346?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    alt: "1번 이미지",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1713341207125-c745927e08de?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    alt: "2번 이미지",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1712246437466-fedea86a99f5?q=80&w=2274&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    alt: "3번 이미지",
+  },
 ];
 
 const Carousel = () => {
@@ -39,23 +48,26 @@ const Carousel = () => {
 
     if (newCurr === 0) {
       moveToNthSlide(soulSliderLength);
+      // console.log(`soulSliderLength: ${soulSliderLength}`);
     }
 
     setCarouselTransition("transform 500ms ease-in-out");
   };
 
   const moveToNthSlide = (n) => {
-    setTimeout(() => {
-      setCarouselTransition("");
-      setCurrCarousel(n);
-    }, 500);
+    setCarouselTransition("");
+    setCurrCarousel(n);
   };
+
+  useEffect(() => {
+    console.log(currCarousel);
+  }, [currCarousel]);
 
   const renderImages = () => {
     const imageData = makeNewDataArray(SOUL_DATA);
+    // console.log(imageData);
     return imageData.map((image, index) => {
-      console.log(image);
-      return(
+      return (
         <div
           className="carouselImageWrap"
           key={index}
@@ -64,19 +76,22 @@ const Carousel = () => {
             transition: `${carouselTransition}`,
           }}
         >
-          <img src={image} alt={image} />
+          <img src={image.src} alt={image.alt} />
         </div>
-      )
+      );
     });
   };
 
   return (
     <div className="carouselContainer">
-      <div className="img-container">{renderImages()}</div>
-      <div className="btn-container">
-        <button onClick={slidePrevSoulsCarousel}>Previous</button>
-        <button onClick={slideNextSoulsCarousel}>Next</button>
-      </div>
+      {/* <div className="img-container">{renderImages()}</div> */}
+      {renderImages()}
+      <button onClick={slidePrevSoulsCarousel} className="prev-btn">
+        Previous
+      </button>
+      <button onClick={slideNextSoulsCarousel} className="next-btn">
+        Next
+      </button>
     </div>
   );
 };
